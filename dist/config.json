@@ -1,0 +1,68 @@
+{
+  "AI_MODEL": "gpt-4o-mini",
+  "EMBEDDING_MODEL": "text-embedding-3-small",
+  "OPENAI_API_KEY": "SUA_API_KEY_AQUI",
+  "SEARCH_CONFIG": {
+    "short_query_threshold": 50,
+    "medium_query_threshold": 150,
+    "short_query_results": 2,
+    "medium_query_results": 3,
+    "long_query_results": 4,
+    "max_total_context_length": 8000,
+    "max_chunk_length": 4000,
+    "max_summary_length": 1500,
+    "search_multiplier": 3,
+    "max_chunks_per_file": 2,
+    "comprehensive_search_results": 10,
+    "comprehensive_context_multiplier": 2,
+    "max_total_comprehensive_results": 15
+  },
+  "INDEX_CONFIG": {
+    "vault_path": "E:\\SEU\\VAULT",
+    "index_path": "vector_index/faiss_index.pkl",
+    "enable_usage_tracking": true,
+    "verbose": false,
+    "max_chunk_size": 3000,
+    "chunk_overlap": 200,
+    "min_chunk_size": 100,
+    "auto_update_interval": 60,
+    "excluded_paths": {
+      ".obsidian": true,
+      ".git": true,
+      ".vscode": true,
+      "node_modules": true,
+      "__pycache__": true,
+      ".DS_Store": true,
+      "Thumbs.db": true,
+      "desktop.ini": true
+    }
+  },
+  "CHAT_MEMORY_CONFIG": {
+    "chat_index_path": "vector_index/chat_faiss_index.pkl",
+    "enable_usage_tracking": true,
+    "chat_verbose": false,
+    "max_short_term_memory": 20,
+    "max_short_term_tokens": 4000,
+    "long_term_memory_chunk_size": 1000,
+    "chat_auto_update_interval": 300,
+    "relevance_threshold": 0.7,
+    "max_memory_results": 5,
+    "default_hard_delete": false
+  },
+  "PERFORMANCE_CONFIG": {
+    "enable_context_logging": true,
+    "enable_search_timing": true,
+    "context_size_warning": 6000
+  },
+  "LOGGING_CONFIG": {
+    "logs_directory": "logs",
+    "log_level": "INFO",
+    "log_format": "csv",
+    "include_timestamp": true,
+    "max_log_files": 30,
+    "log_rotation": "daily"
+  },
+  "FILE_READER_CONFIG": {
+    "verbose": false
+  }
+}
