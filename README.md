@@ -121,7 +121,7 @@ A aplicação suporta os seguintes tipos de arquivo:
 - **Word** (.docx)
 - **Excel** (.xlsx)
 - **PDF** (.pdf)
-- **Texto** (.txt)
+- **Texto** (.txt) 'Em criação'
 
 ## 💬 Como Usar o Chat
 
