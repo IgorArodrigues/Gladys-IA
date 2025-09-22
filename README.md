@@ -121,7 +121,7 @@ A aplicação suporta os seguintes tipos de arquivo:
 - **Word** (.docx)
 - **Excel** (.xlsx)
 - **PDF** (.pdf)
-- **Texto** (.txt)
+- **Texto** (.txt) 'Em criação'
 
 ## 💬 Como Usar o Chat
 
@@ -202,6 +202,40 @@ Gladys IA/
 ├── logs/                 # Arquivos de log
 └── templates/            # Interface web
 ```
+## Tecnologias Utilizadas
+
+### Backend Framework & Web Server
+- **Flask 2.3.3**: Framework web Python para construção da aplicação
+- **Werkzeug 2.3.7**: Toolkit WSGI e utilitários para Flask
+- **Jinja2 3.1.2**: Template engine para renderização de páginas HTML
+
+### Database & ORM
+- **SQLite**: Banco de dados leve e sem servidor para armazenar dados de usuários e histórico de chat
+- **Flask-SQLAlchemy 3.0.5**: ORM (Object-Relational Mapping) para operações de banco de dados
+- **Flask-Login 0.6.3**: Gerenciamento de sessão de usuário e autenticação
+
+### AI & Machine Learning
+- **OpenAI API (>=1.0.0)**: Integração com modelos GPT da OpenAI para funcionalidade de chat
+- **FAISS-CPU 1.7.4**: Facebook AI Similarity Search para busca por similaridade vetorial e indexação de documentos
+- **NumPy 1.24.3**: Biblioteca de computação numérica para operações com arrays
+
+### Document Processing
+- **python-docx (>=0.8.11)**: Leitura e processamento de documentos Microsoft Word (.docx)
+- **openpyxl (>=3.0.0)**: Leitura e processamento de planilhas Excel (.xlsx)
+- **pdfplumber (>=0.7.0)**: Extração de texto de documentos PDF
+- **markdown (>=3.4.0)**: Processamento e renderização de conteúdo Markdown
+- **pandas (>=1.5.0)**: Manipulação e análise de dados para dados estruturados
+
+### Frontend & UI
+- **Bootstrap 5**: Framework CSS para design web responsivo
+- **Font Awesome**: Biblioteca de ícones para elementos de UI
+- **HTML5/CSS3**: Padrões web modernos para marcação e estilização
+- **JavaScript**: Interatividade do lado do cliente para a interface de chat
+
+### Development & Deployment
+- **Python 3.12**: Linguagem de programação
+- **Git**: Sistema de controle de versão
+- **CSV Logging**: Sistema de logging personalizado para monitoramento da aplicação
 
 ## 🆘 Suporte
 
