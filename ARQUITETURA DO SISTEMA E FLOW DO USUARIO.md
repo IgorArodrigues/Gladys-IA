@@ -52,84 +52,94 @@ Isso resulta em respostas mais precisas, atualizadas e verificáveis.
 
 ## 📊  Diagrama simplificado da Arquitetura do Sistema
 
-```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                         Gladys IA ARQUITETURA DO SISTEMA                 │
-├──────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  ┌─────────────────┐                                                     │
-│  │   USER REQUEST  │  "Quais são os principais pontos do meu contrato?"  │
-│  └────────┬────────┘                                                     │
-│           │                                                              │
-│           ▼                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐ │
-│  │                      APLICAÇÃO FLASK WEB                            │ │
-│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────────┐   │ │
-│  │  │ Authentication│  │   Routes.py  │  │    Chat Interface       │   │ │
-│  │  │   (auth.py)   │  │  /api/chat   │  │  (templates/chat.html)  │   │ │
-│  │  └──────────────┘  └──────┬───────┘  └──────────────────────────┘   │ │
-│  └──────────────────────────┬──────────────────────────────────────────┘ │
-│                             │                                            │
-│           ┌─────────────────┼─────────────────┐                          │
-│           ▼                 ▼                 ▼                          │
-│  ┌───────────────┐ ┌───────────────┐ ┌───────────────────────────────┐   │
-│  │QUERY INTENT   │ │CONTEXT        │ │CHAT MEMORY                    │   │
-│  │ANALYZER       │ │RETRIEVAL      │ │MANAGER                        │   │
-│  │               │ │               │ │  ┌─────────────────────────┐  │   │
-│  │ • Conversational│ │ • Document   │ │  │Short-term (DB messages)│  │   │
-│  │ • List docs   │ │   search      │ │  │Long-term (pgvector)     │  │   │
-│  │ • Comprehensive│ │ • Memory     │ │  └─────────────────────────┘  │   │
-│  │ • Specific    │ │   context     │ │                               │   │
-│  │ • Follow-up   │ │ • Doc hint    │ │  ┌─────────────────────────┐  │   │
-│  │   detection   │ │   boost       │ │  │Document Hint Tracking   │  │   │
-│  └───────┬───────┘ └───────┬───────┘ │  │(Chat.last_document_used)│  │   │
-│          │                 │         │  └─────────────────────────┘  │   │
-│          └─────────────────┼─────────┴───────────────────────────────┘   │
-│                            ▼                                             │
-│  ┌────────────────────────────────────────────────────────────────────┐  │
-│  │                        INDEX MANAGER                               │  │
-│  │  ┌────────────────────────────┐  ┌──────────────────────────────┐  │  │
-│  │  │  PostgreSQL + pgvector     │  │  Document Summaries          │  │  │
-│  │  │  (text_chunks, HNSW index) │  │  (DocumentMetadata, etc.)    │  │  │
-│  │  └────────────────────────────┘  └──────────────────────────────┘  │  │
-│  └──────────────────────────────────┬─────────────────────────────────┘  │
-│                                     │                                    │
-│                                     ▼                                    │
-│  ┌────────────────────────────────────────────────────────────────────┐  │
-│  │                          TOOL CALLS (Opcional)                     │  │
-│  │  ┌──────────────────────────────────────────────────────────────┐  │  │
-│  │  │ ToolsMaster (validação + execução)                           │  │  │
-│  │  │ • registra tool schemas (e.g., mathematic tools)             │  │  │
-│  │  │ • Valida parametros via validate_and_sanitize                │  │  │
-│  │  │ • Executa via modulo call_tool ou função direta              │  │  │
-│  │  └──────────────────────────────────────────────────────────────┘  │  │
-│  └──────────────────────────────────┬─────────────────────────────────┘  │
-│                                     │                                    │
-│                                     ▼                                    │
-│  ┌────────────────────────────────────────────────────────────────────┐  │
-│  │                        MODEL ROUTER                                │  │
-│  │  ┌──────────────────────────────────────────────────────────────┐  │  │
-│  │  │  Camada de decisão (GPT-4o-mini)                             │  │  │
-│  │  │  • Analisa a consulta e o contexto                           │  │  │
-│  │  │  • Decide: STANDARD | WEB_SEARCH | WEB_SEARCH_WITH_CONTEXT   │  │  │
-│  │  └──────────────────────────────────────────────────────────────┘  │  │
-│  └──────────────────────────────────┬─────────────────────────────────┘  │
-│                                     │                                    │
-│                                     ▼                                    │
-│  ┌────────────────────────────────────────────────────────────────────┐  │
-│  │                      AI RESPONSE GENERATION                        │  │
-│  │  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │  │
-│  │  │  GPT-4o          │  │ GPT-4o-search    │  │ Combined Mode    │  │  │
-│  │  │  (Contexto local) │  │ (Web search)     │  │ (Hibrido)       │  │  │
-│  │  └──────────────────┘  └──────────────────┘  └──────────────────┘  │  │
-│  └──────────────────────────────────┬─────────────────────────────────┘  │
-│                                     │                                    │
-│                                     ▼                                    │
-│  ┌─────────────────┐                                                     │
-│  │   AI RESPONSE   │  "Com base no seu contrato, o principal..."         │
-│  └─────────────────┘                                                     │
-│                                                                          │
-└──────────────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    %% --- Nó Inicial ---
+    UserRequest(["👤 USER REQUEST<br/>'Quais são os principais pontos do meu contrato?'"])
+
+    %% 1. Aplicação Flask
+    subgraph FlaskApp ["APLICAÇÃO FLASK WEB"]
+        direction TB
+        Auth["Authentication<br/>(auth.py)"]
+        Routes["Routes.py<br/>/api/chat"]
+        ChatUI["Chat Interface<br/>(templates/chat.html)"]
+    end
+
+    UserRequest --> ChatUI
+    ChatUI --> Routes
+    Auth -.-> Routes
+
+    %% 2. Camada de Lógica
+    subgraph CoreLogic ["LÓGICA DE PROCESSAMENTO"]
+        direction TB
+        
+        Intent["QUERY INTENT ANALYZER<br/>• Conversational<br/>• List docs<br/>• Comprehensive<br/>• Specific<br/>• Follow-up detection"]
+        
+        Context["CONTEXT RETRIEVAL<br/>• Document search<br/>• Memory context<br/>• Doc hint boost"]
+        
+        Memory["CHAT MEMORY MANAGER"]
+
+        %% Sub-bloco de Armazenamento
+        subgraph MemoryStore ["CHAT MEMORY MANAGER (Storage)"]
+            ShortTerm[("Short-term<br/>(DB messages)")]
+            LongTerm[("Long-term<br/>(pgvector)")]
+            HintTrack[("Document Hint Tracking<br/>(Chat.last_document_used)")]
+        end
+    end
+
+    Routes --> Intent
+    Routes --> Context
+    Routes --> Memory
+    Memory --> ShortTerm & LongTerm & HintTrack
+
+    %% 3. Gerenciador de Índice
+    subgraph IndexManager ["INDEX MANAGER"]
+        Postgres[("PostgreSQL + pgvector<br/>(text_chunks, HNSW index)")]
+        DocSummaries[("Document Summaries<br/>(DocumentMetadata, etc.)")]
+    end
+
+    Context --> Postgres & DocSummaries
+
+    %% 4. Tool Calls (Onde estava o erro)
+    subgraph ToolsLayer ["TOOL CALLS (Opcional)"]
+        ToolsMaster["ToolsMaster (validação + execução)<br/>• registra tool schemas<br/>• Valida parametros<br/>• Executa via modulo"]
+    end
+
+    Intent & Context --> ToolsMaster
+
+    %% 5. Roteador
+    subgraph RouterLayer ["MODEL ROUTER"]
+        Decision["Camada de decisão (GPT-4o-mini)<br/>• Analisa consulta/contexto<br/>• Decide: STANDARD / WEB / HYBRID"]
+    end
+
+    ToolsMaster --> Decision
+
+    %% 6. Geração
+    subgraph GenLayer ["AI RESPONSE GENERATION"]
+        GPT_Local["GPT-4o<br/>(Contexto local)"]
+        GPT_Web["GPT-4o-search<br/>(Web search)"]
+        GPT_Hybrid["Combined Mode<br/>(Híbrido)"]
+    end
+
+    Decision --> GPT_Local & GPT_Web & GPT_Hybrid
+
+    %% --- Nó Final ---
+    FinalOutput(["🤖 AI RESPONSE<br/>'Com base no seu contrato...'"])
+
+    GPT_Local & GPT_Web & GPT_Hybrid --> FinalOutput
+
+    %% --- Estilos ---
+    classDef userClass fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef containerClass fill:#f5f5f5,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5;
+    classDef logicClass fill:#e1f5fe,stroke:#0277bd,stroke-width:2px;
+    classDef dbClass fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef toolClass fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+
+    class UserRequest,FinalOutput userClass;
+    class FlaskApp,CoreLogic,IndexManager,ToolsLayer,RouterLayer,GenLayer,MemoryStore containerClass;
+    class Auth,Routes,ChatUI,Intent,Context,Memory,Decision,GPT_Local,GPT_Web,GPT_Hybrid logicClass;
+    class ShortTerm,LongTerm,HintTrack,Postgres,DocSummaries dbClass;
+    class ToolsMaster toolClass;
 ```
 
 ---

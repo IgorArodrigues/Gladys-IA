@@ -6,7 +6,7 @@
 
 O **Gladys IA** é um sistema de **RAG (Retrieval-Augmented Generation)** projetado para ingestão, processamento e consulta semântica em bases de conhecimento corporativas.
 
-O projeto nasceu como uma aplicação monolítica local (desktop), para ajudar eu e meu colegas a "conversar" com os documentos no obsidin de outros projetos e evoluiu para uma arquitetura de microserviços containerizada, visando escalabilidade, separação de responsabilidades e persistência robusta de dados vetoriais.
+O projeto nasceu como uma aplicação monolítica local (desktop), para ajudar a mim e meus colegas a "conversar" com os documentos de outros projetos no Obsidian  e evoluiu para uma arquitetura de microserviços containerizada, visando escalabilidade, separação de responsabilidades e persistência robusta de dados vetoriais.
 
 ### 🚀 Evolução da Arquitetura
 
@@ -232,6 +232,14 @@ O arquivo `config.json` é essencial para o funcionamento da aplicação. Aqui e
 ### 🔑 Configurações Importantes
 
 **OBRIGATÓRIO - Chave da API OpenAI:**
+```json
+"OPENAI_API_KEY": "sk-proj-sua-chave-aqui"
+```
+
+**OBRIGATÓRIO - Caminho do Vault:**
+```json
+"vault_path": "C:\\Caminho\\Para\\Seu\\Vault", // Caminho para sua pasta com os arquivos, subdiretórios tambem são lidos se não forem banidos, use "//"
+```
 ## 📄 Requisitos do Pandoc
 
 O Pandoc é uma ferramenta essencial para a conversão de documentos. Para garantir que a aplicação funcione corretamente, você deve ter o Pandoc instalado em seu sistema.
@@ -245,16 +253,8 @@ Após a instalação, verifique se o Pandoc está acessível no terminal ou prom
 ```bash
 pandoc --version
 ```
-
 Se o comando retornar a versão do Pandoc, a instalação foi bem-sucedida.
-```json
-"OPENAI_API_KEY": "sk-proj-sua-chave-aqui"
-```
 
-**OBRIGATÓRIO - Caminho do Vault:**
-```json
-"vault_path": "C:\\Caminho\\Para\\Seu\\Vault", // Caminho para sua pasta com os arquivos, subdiretórios tambem são lidos se não forem banidos, use "//"
-```
 ## 📁 Tipos de Arquivos Suportados
 
 A aplicação suporta os seguintes tipos de arquivo:
