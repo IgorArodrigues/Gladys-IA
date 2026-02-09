@@ -1,0 +1,101 @@
+{
+  "AI_MODEL": "gpt-4o",
+  "DECISION_MODEL": "gpt-4o-mini",
+  "WEB_SEARCH_MODEL": "gpt-4o-search-preview",
+  "EMBEDDING_MODEL": "text-embedding-3-small",
+  "OPENAI_API_KEY": "SUA_API_KEY_AQUI",
+  "MODEL_DECISION_CONFIG": {
+    "enable_decision_layer": true,
+    "use_web_search_threshold": 0.7,
+    "context_sufficiency_threshold": 0.6,
+    "max_decision_tokens": 500,
+    "decision_temperature": 0.3,
+    "allow_tool_calls": true,
+    "tool_config": {
+      "modules": [
+        "Tools.mathematic"
+      ],
+      "max_iterations": 3,
+      "default_timeout": 10
+    }
+  },
+  "SEARCH_CONFIG": {
+    "short_query_threshold": 25,
+    "medium_query_threshold": 50,
+    "short_query_results": 2,
+    "medium_query_results": 3,
+    "long_query_results": 4,
+    "max_total_context_length": 8000,
+    "max_summary_length": 1500,
+    "comprehensive_search_results": 10,
+    "max_total_comprehensive_results": 15
+  },
+  "ADVANCED_SEARCH_CONFIG": {
+    "comprehensive": {
+      "max_context_length": 15000
+    },
+    "filename_priority": {
+      "max_content_length": 12000
+    }
+  },
+  "INDEX_CONFIG": {
+    "vault_path": "E:\\SEU\\VAULT\\AQUI",
+    "index_path": "vector_index/faiss_index.pkl",
+    "enable_usage_tracking": true,
+    "verbose": false,
+    "auto_update": true,
+    "max_chunk_size": 3000,
+    "chunk_overlap": 200,
+    "min_chunk_size": 100,
+    "auto_update_interval": 60,
+    "max_embedding_chars": 6000,
+    "excluded_paths": {
+      ".obsidian": true,
+      ".git": true,
+      ".vscode": true,
+      "node_modules": true,
+      "__pycache__": true,
+      ".DS_Store": true,
+      "Thumbs.db": true,
+      "desktop.ini": true
+    },
+    "enable_document_summaries": true,
+    "summary_min_file_size": 5000,
+    "summary_max_input_chars": 50000,
+    "summary_block_size": 6000,
+    "summary_model": "gpt-4o-mini"
+  },
+  "CHAT_MEMORY_CONFIG": {
+    "chat_index_path": "vector_index/chat_faiss_index.pkl",
+    "enable_usage_tracking": true,
+    "chat_verbose": false,
+    "max_short_term_memory": 20,
+    "max_short_term_tokens": 4000,
+    "long_term_memory_chunk_size": 1000,
+    "chat_auto_update_interval": 300,
+    "relevance_threshold": 0.5,
+    "max_memory_results": 5,
+    "default_hard_delete": false,
+    "batch_embedding_threshold": 10
+  },
+  "PERFORMANCE_CONFIG": {
+    "enable_context_logging": true,
+    "enable_search_timing": true,
+    "context_size_warning": 6000
+  },
+  "LOGGING_CONFIG": {
+    "logs_directory": "logs",
+    "log_level": "INFO",
+    "log_format": "csv",
+    "include_timestamp": true,
+    "max_log_files": 30,
+    "log_rotation": "daily"
+  },
+  "FILE_READER_CONFIG": {
+    "verbose": false
+  },
+  "DOCUMENT_HINT_CONFIG": {
+    "follow_up_max_words": 6,
+    "hint_boost_multiplier": 1.15
+  }
+}
